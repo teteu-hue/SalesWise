@@ -1,0 +1,22 @@
+{
+    "name": "jefferson/sales-wise",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jefferson Oliveira",
+            "email": "jefferson.oliveira203@etec.sp.gov.br",
+            "homepage": "https://www.linkedin.com/in/matheus-goncalves-oliveira/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "jefferson.oliveira203@etec.sp.gov.br"
+    },
+    "require": {
+        "php": ">=8.2.12"
+    }
+}

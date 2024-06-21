@@ -51,6 +51,16 @@ BEGIN
     RETURN NEW;
 END $$;
 
+-- Sempre que um pedido é criado adiciona o status 'pending' para o mesmo
+
+CREATE OR REPLACE FUNCTION set_pending_status()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.id_status := (SELECT id_status FROM OrderStatus WHERE id_status = 1);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- ******************** TRIGGERS ********************
 -- Trigger após inserir um item no pedido
 CREATE TRIGGER after_insert_order_item
@@ -83,7 +93,13 @@ FOR EACH ROW
 EXECUTE FUNCTION calculate_total_price();
 
 -- Trigger utilizado para atualizar o estoque do produto
-CREATE TRIGGER before_insert_order_item
+CREATE TRIGGER before_insert_order_item_stock
 BEFORE INSERT ON OrderItems
 FOR EACH ROW
 EXECUTE FUNCTION check_and_update_stock();
+
+-- Trigger utilizada após criar um pedido
+CREATE TRIGGER set_status_to_pending
+BEFORE INSERT ON Orders
+FOR EACH ROW
+EXECUTE FUNCTION set_pending_status();

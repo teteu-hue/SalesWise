@@ -20,6 +20,17 @@ CREATE TABLE Products (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Categories (
+    id_categorie SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+ALTER TABLE Products
+ADD COLUMN id_categorie INT NOT NULL;
+
+ALTER TABLE Products
+ADD FOREIGN KEY (id_categorie) REFERENCES Categories(id_categorie);
+
 -- Tabela Customers para gerenciamento de clientes
 CREATE TABLE Customers (
     id_customer SERIAL PRIMARY KEY,
@@ -30,16 +41,22 @@ CREATE TABLE Customers (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE OrderStatus(
+    id_status SERIAL PRIMARY KEY,
+    status_order VARCHAR(20) UNIQUE NOT NULL
+);
+
 -- Tabela Orders para gerenciamento de pedidos
 CREATE TABLE Orders (
     id_order SERIAL PRIMARY KEY,
     id_customer INT NOT NULL,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    id_status INT NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_customer) REFERENCES Customers(id_costumer)
+    FOREIGN KEY (id_customer) REFERENCES Customers(id_customer),
+    FOREIGN KEY (id_status) REFERENCES OrderStatus(id_status)
 );
 
 -- Tabela OrderItems para gerenciamento de itens de pedidos
@@ -55,3 +72,5 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (id_order) REFERENCES Orders(id_order),
     FOREIGN KEY (id_product) REFERENCES Products(id_product)
 );
+
+INSERT INTO OrderStatus (status_order) VALUES ('pending'), ('shipped'), ('delivered'), ('cancelled');

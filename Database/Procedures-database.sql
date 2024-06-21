@@ -55,11 +55,18 @@ END $$:
 CREATE OR REPLACE PROCEDURE create_order_items(
     p_id_order INT,
     p_id_product INT,
-    p_quantity INT
+    p_stock_quantity INT
 )
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_unit_price DECIMAL(10, 2);
 BEGIN
-    INSERT INTO OrderItems(id_order, id_product, p_quantity)
-    VALUES(p_id_order, p_id_product, p_quantity)
+    -- Obter o preço unitário dos produtos
+    SELECT price INTO v_unit_price
+    FROM Products
+    WHERE id_product = p_id_product;
+
+    INSERT INTO OrderItems(id_order, id_product, quantity, unit_price)
+    VALUES(p_id_order, p_id_product, p_quantity, v_unit_price);
 END $$;

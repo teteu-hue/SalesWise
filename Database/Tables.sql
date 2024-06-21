@@ -42,15 +42,14 @@ CREATE TABLE Orders (
     FOREIGN KEY (id_customer) REFERENCES Customers(id_costumer)
 );
 
-
 -- Tabela OrderItems para gerenciamento de itens de pedidos
 CREATE TABLE OrderItems (
-    id SERIAL PRIMARY KEY,
+    id_order_items SERIAL PRIMARY KEY,
     id_order INT NOT NULL,
     id_product INT NOT NULL,
     quantity INT NOT NULL,
     unit_price DECIMAL(10, 2) NOT NULL,
-    total_price DECIMAL(10, 2) AS (quantity * unit_price) STORED,
+    total_price DECIMAL(10, 2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_order) REFERENCES Orders(id_order),

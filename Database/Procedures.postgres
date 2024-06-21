@@ -22,7 +22,7 @@ CREATE OR REPLACE PROCEDURE insert_product(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO Products(name, price, stock_quantity)
+    INSERT INTO Products(name, price, stock_quantity, description)
     VALUES (p_name, p_price, p_stock_quantity, p_description)
 END $$;
 

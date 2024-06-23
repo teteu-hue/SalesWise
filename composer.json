@@ -2,7 +2,8 @@
     "name": "jefferson/sales-wise",
     "autoload": {
         "psr-4": {
-            "App\\" : "src/"
+            "App\\" : "src/",
+            "Database\\" : "Database/"
         }
     },
     "authors": [

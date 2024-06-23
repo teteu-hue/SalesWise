@@ -2,15 +2,13 @@
 
 namespace App;
 
+use App\Models\DbProduct;
+
 require('../vendor/autoload.php');
 
-use Database\Dao;
-
-$db = new Dao();
-
-$result = $db->testConnection();
-
-var_dump($result);
-
+$db = new DbProduct();
+$result = $db->getProducts();
+echo "<pre>";
+var_dump($result->fetchAll());
 ?>
 

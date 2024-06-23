@@ -6,7 +6,7 @@ use Error;
 use PDO;
 use PDOException;
 
-class Dao{
+abstract class Dao{
 
     protected $connection;
     private string $dsn;
@@ -58,8 +58,7 @@ class Dao{
         return $this->options;
     }
 
-    public function getConnection(){
-
+    private function setConnection(){
         try
         {
             $database = $this->getFile();
@@ -70,18 +69,40 @@ class Dao{
             $dsn = $this->getDsn();
             $options = $this->getOptions();
 
+            $connection = new PDO($dsn, $username, $password, $options);
+            $this->connection = $connection;
         } 
-        catch (PDOException $e) 
+        catch (PDOException $e)
         {
             echo $e->getMessage();
+        }        
+
+    }
+
+    protected function getConnection(){
+        $this->setConnection();
+        return $this->connection;
+    }
+
+    protected function closeConnection(){
+        $this->connection = null;
+    }
+
+    protected function validateQuery($result){
+        if($result->rowCount() < 0){
+            throw new Error("Nenhum resultado encontrado!");
         }
+        return $result;
+    }
 
-        if(!isset($this->connection)){
-           $this->connection = new PDO($dsn, $username, $password, $options); 
-        }
+    protected function runSelectQuery($query){
+        $this->getConnection();
 
-        return $this->connection;        
+        $result = $this->connection->query($query);
 
+        $this->closeConnection();
+
+        return $this->validateQuery($result);
     }
 }
 

@@ -28,6 +28,9 @@ CREATE TABLE Categories (
 ALTER TABLE Products
 ADD COLUMN id_categorie INT NOT NULL;
 
+ALTER TABLE Products 
+ADD COLUMN status BOOLEAN;
+
 ALTER TABLE Products
 ADD FOREIGN KEY (id_categorie) REFERENCES Categories(id_categorie);
 

@@ -62,4 +62,5 @@ class DbProduct extends Dao
             echo $e->getMessage();
         }
     }
+    
 }

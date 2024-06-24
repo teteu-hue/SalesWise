@@ -22,9 +22,46 @@ CREATE OR REPLACE PROCEDURE insert_product(
 )
 LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_status BOOLEAN;
 BEGIN
-    INSERT INTO Products(name, price, id_categorie, stock_quantity, description)
-    VALUES (p_name, p_price, p_id_categorie, p_stock_quantity, p_description);
+    v_status = TRUE;
+
+    INSERT INTO Products(name, price, id_categorie, stock_quantity, description, status)
+    VALUES (p_name, p_price, p_id_categorie, p_stock_quantity, p_description, v_status);
+END $$;
+
+CREATE OR REPLACE PROCEDURE update_product(
+    p_id_product INT,
+    p_name VARCHAR(100) DEFAULT NULL,
+    p_price DECIMAL(10, 2) DEFAULT NULL,
+    p_id_categorie INT DEFAULT NULL
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE Products
+    SET
+        name = COALESCE(p_name, name),
+        price = COALESCE(p_price, price),
+        id_categorie = COALESCE(p_id_categorie, id_categorie),
+        updated_at = CURRENT_TIMESTAMP
+    WHERE
+        p_id_product = id_product;
+END $$;
+
+CREATE OR REPLACE PROCEDURE delete_product(
+    p_id_product INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_id_product <= 0 THEN
+        RAISE EXCEPTION 'Não é possível deletar um valor abaixo de zero!';
+    END IF;
+
+    DELETE FROM Products
+    WHERE p_id_product = id_product;
 END $$;
 
 -- Categories

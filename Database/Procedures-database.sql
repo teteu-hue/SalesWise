@@ -64,6 +64,36 @@ BEGIN
     WHERE p_id_product = id_product;
 END $$;
 
+CREATE OR REPLACE PROCEDURE enable_product(
+    p_id_product INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_id_product <= 0 THEN
+        RAISE EXCEPTION 'Insira um valor válido!';
+    END IF;
+
+    UPDATE Products
+    SET status = TRUE
+    WHERE p_id_product = id_product;
+END $$;
+
+CREATE OR REPLACE PROCEDURE disable_product(
+    p_id_product INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_id_product <= 0 THEN
+        RAISE EXCEPTION 'Insira um valor válido!';
+    END IF;
+
+    UPDATE Products
+    SET status = FALSE
+    WHERE p_id_product = id_product;
+END $$;
+
 -- Categories
 CREATE OR REPLACE PROCEDURE insert_categorie(
     p_name VARCHAR(100)

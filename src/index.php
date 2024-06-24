@@ -10,7 +10,7 @@ require('../vendor/autoload.php');
 echo "<pre>";
 $db = new DbProduct();
 
-$result = $db->getProducts();
+$result = $db->getProductById(1);
 var_dump($result->fetchAll());
 ?>
 

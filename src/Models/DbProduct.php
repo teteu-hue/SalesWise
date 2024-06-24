@@ -20,7 +20,7 @@ class DbProduct extends Dao
             $sql = "SELECT * FROM Products WHERE id_product = $id";
 
             $result = $this->runSelectQuery($sql);
-            return $result;
+            return $result->fetchAll();
 
         } catch(PDOException $e){
             echo $e->getMessage();
@@ -32,7 +32,7 @@ class DbProduct extends Dao
         try {
             $query = "SELECT * FROM Products";
             $result = $this->runSelectQuery($query);
-            return $result;
+            return $result->fetchAll();
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

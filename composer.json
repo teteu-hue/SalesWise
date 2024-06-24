@@ -16,8 +16,5 @@
     ],
     "support": {
         "email": "jefferson.oliveira203@etec.sp.gov.br"
-    },
-    "require": {
-        "php": ">=8.2.12"
     }
 }

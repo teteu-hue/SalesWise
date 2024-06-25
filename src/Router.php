@@ -19,12 +19,15 @@ class Router
      * @param string $action
      * @param string $method
      * 
+     * Add a route in array, with controller and action.
      * @return void
      */
-    private function addRoute($route, $controller, $action, $method) : void
+    private function addRoute($route, $controller, $action, $method): void
     {
-        $this->routes[$method][$route] = ['controller' => $controller, 
-                                          'action' => $action];
+        $this->routes[$method][$route] = [
+            'controller' => $controller,
+            'action' => $action
+        ];
     }
 
     /**
@@ -32,9 +35,10 @@ class Router
      * @param string $controller
      * @param string $action
      * 
+     * @GET
      * @return void
      */
-    public function get($route, $controller, $action) : void
+    public function get($route, $controller, $action): void
     {
         $this->addRoute($route, $controller, $action, "GET");
     }
@@ -44,9 +48,10 @@ class Router
      * @param string $controller
      * @param string $action
      * 
+     * @POST
      * @return void
      */
-    public function post($route, $controller, $action) : void
+    public function post($route, $controller, $action): void
     {
         $this->addRoute($route, $controller, $action, "POST");
     }
@@ -56,9 +61,10 @@ class Router
      * @param string $controller
      * @param string $action
      * 
+     * @PUT
      * @return void
      */
-    public function put($route, $controller, $action) : void
+    public function put($route, $controller, $action): void
     {
         $this->addRoute($route, $controller, $action, "POST");
     }
@@ -68,9 +74,10 @@ class Router
      * @param string $controller
      * @param string $action
      * 
+     * @DELETE
      * @return void
      */
-    public function delete($route, $controller, $action) : void
+    public function delete($route, $controller, $action): void
     {
         $this->addRoute($route, $controller, $action, "POST");
     }
@@ -80,7 +87,7 @@ class Router
      * 
      * @return void
      */
-    public function dispatch() : void
+    public function dispatch(): void
     {
         // uri that will be sent
         $url = strtok($_SERVER['REQUEST_URI'], '?');
@@ -88,18 +95,20 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
 
         try {
-            if(!array_key_exists($url, $this->routes[$method])){
+            // verify in array if de `url` exists
+            if (!array_key_exists($url, $this->routes[$method])) {
+                // not found `url`
                 throw new Exception("No route found for URI: $url", 404);
             }
             $controller = $this->routes[$method][$url]['controller'];
             $action = $this->routes[$method][$url]['action'];
 
+            // create a new controller
             $controller = new $controller();
+            // execute a action or function
             $controller->$action();
-        } catch(Throwable $th){
+        } catch (Throwable $th) {
             echo $th->getMessage();
         }
     }
 }
-
-?>
